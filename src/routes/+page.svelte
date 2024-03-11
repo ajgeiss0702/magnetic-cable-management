@@ -24,11 +24,13 @@
 		{/each}
 
 		<br>
-		<a href="https://lttstore.com" class="anchor">lttstore.com</a><br>
-		This site made by
-		<a href="https://about.ajg0702.us" class="anchor" target="_blank" rel="noopener">
-			aj
-		</a>
+		<div class="opacity-65">
+			Images and products from <a href="https://lttstore.com" class="anchor">lttstore.com</a><br>
+			This site made by
+			<a href="https://about.ajg0702.us" class="anchor" target="_blank" rel="noopener">
+				aj
+			</a>
+		</div>
 	</div>
 </div>
 
