@@ -5,7 +5,10 @@
 	export let data;
 </script>
 <svelte:head>
-	<title>Have they launched magnetic cable management yet (.com)</title>
+	<title>Have they launched magnetic cable management yet? (.com)</title>
+	<meta name="description" content="Checks lttstore.com to see if they have released magnetic cable management yet. Will link to the product(s) when it finds them."/>
+	<meta property="og:image" content="/arch_stick.webp"/>
+	<meta name="twitter:card" content="summary_large_image">
 </svelte:head>
 
 <div class="container h-screen mx-auto flex justify-center items-center">
