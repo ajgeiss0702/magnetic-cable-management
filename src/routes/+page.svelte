@@ -25,7 +25,7 @@
 
 		<br>
 		<a href="https://lttstore.com" class="anchor">lttstore.com</a><br>
-		Site made by
+		This site made by
 		<a href="https://about.ajg0702.us" class="anchor" target="_blank" rel="noopener">
 			aj
 		</a>
