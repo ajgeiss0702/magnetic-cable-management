@@ -14,6 +14,8 @@
 
     }
     img {
-        max-width: 15em;
+        @apply mx-auto;
+        max-height: 15em;
+        width: auto;
     }
 </style>
