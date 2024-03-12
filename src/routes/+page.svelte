@@ -1,9 +1,38 @@
-<script>
+<script lang="ts">
 	import Product from "$lib/Product.svelte";
 	import CountUp from "$lib/CountUp.svelte";
+	import {onMount} from "svelte";
+	import {invalidateAll} from "$app/navigation";
+	import {isNearWan} from "$lib";
 
 	export let data;
+
+
+	let i = 0;
+
+	$: lastCheckDate = new Date(data.lastCheck);
+
+	function check() {
+		const lastCheckDistance = Date.now() - data.lastCheck;
+		if((i++ % 5 !== 0 && !isNearWan() && lastCheckDistance < 30 * 60e3) || (document.hidden && lastCheckDistance < 2 * 60 * 60e3)) return;
+		console.debug("Invalidating (checking)", lastCheckDistance, i, isNearWan())
+		invalidateAll()
+	}
+
+	function onFocus() {
+		if(Date.now() - data.lastCheck > 2 * 60e3) {
+			check()
+		}
+	}
+
+	onMount(() => {
+		const i = setInterval(check, 24e3);
+		return () => clearInterval(i);
+	})
 </script>
+<svelte:window
+		on:focus={onFocus}
+/>
 <svelte:head>
 	<title>Have they launched magnetic cable management yet? (.com)</title>
 	<meta name="description" content="Checks lttstore.com to see if they have released magnetic cable management yet. Will link to the product(s) when it finds them."/>
@@ -16,10 +45,14 @@
 		<img src="/arch_stick.webp" width="550" height="451" class="big-arch">
 		<br>
 		Have they launched magnetic cable management yet? (.com)
-		<h1 class="h1">{data.matches.length > 0 ? "Yes!" : "No"}</h1>
+		<h1 class="h1 leading-4 pt-3">{data.matches.length > 0 ? "Yes!" : "No"}</h1>
 		{#each data.matches as product}
 			<Product {product}/>
 		{:else}
+			<span class="opacity-70 text-sm">
+				Last checked {lastCheckDate.toLocaleTimeString()}
+			</span>
+			<br>
 			<CountUp/>
 		{/each}
 
