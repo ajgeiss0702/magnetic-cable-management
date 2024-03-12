@@ -10,23 +10,38 @@ let cache: {
 const CACHE_TIME = 23e3;
 
 
-export const load = (async ({fetch}) => {
+export const load = (async ({fetch, platform}) => {
 
     const distance = Date.now() - cache.lastFetch;
     if(distance < CACHE_TIME) {
         return cache.lastResponse as Response;
     }
 
-    const products = await fetch("https://lttstore.com/products.json", {
+    const start = Date.now();
+
+    const url = "https://lttstore.com/products.json";
+    const productsResponse = await fetch(url, {
         headers: {
             "user-agent": "havetheylaunchedmagneticcablemanagementyet.com/" + version
         }
     })
-        .then(r => r.json())
+
+    platform?.env?.LTTSTORE_REQUESTS?.writeDataPoint({
+        blobs: [
+            url
+        ],
+        doubles: [
+            productsResponse.status,
+            Date.now() - start
+        ],
+        indexes: []
+    })
+
+    const products = await productsResponse.json()
         .then(r => r.products as ShopifyProduct[])
 
     const matches = products.filter(p => p.title.toLowerCase().includes("magnet"))
-    // const matches = products.filter(p => p.title.toLowerCase().includes("hat"))
+    // const matches = products.filter(p => p.title.toLowerCase().includes("shirt"))
 
     const response: Response = {
         matches,
