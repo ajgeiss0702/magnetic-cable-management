@@ -4,11 +4,14 @@
 	import {onMount} from "svelte";
 	import {invalidateAll} from "$app/navigation";
 	import {isNearWan} from "$lib";
+	import Confetti from "svelte-confetti";
 
 	export let data;
 
 
 	let i = 0;
+	let clicked = 0;
+	let mounted = false;
 
 	$: lastCheckDate = new Date(data.lastCheck);
 
@@ -28,6 +31,7 @@
 
 	onMount(() => {
 		const i = setInterval(check, 24e3);
+		mounted = true;
 		return () => clearInterval(i);
 	})
 </script>
@@ -46,7 +50,24 @@
 		<img src="/arch_stick.webp" width="550" height="451" class="big-arch">
 		<br>
 		Have they launched magnetic cable management yet? (.com)
-		<h1 class="h1 leading-4 pt-3">{data.matches.length > 0 ? "Yes!" : "No"}</h1>
+		{#if data.matches.length > 0 && mounted}
+			<div class="h-0 w-0 mx-auto">
+				{#key clicked}
+					<Confetti cone x={[-1.5, 1.5]} y={[0.25, 1.5]} amount={50} fallDistance="100px"/>
+					<Confetti x={[-2.5, 2.5]} y={[0.75, 2.25]} amount={100}/>
+				{/key}
+			</div>
+		{/if}
+		<h1 class="h1 leading-4 pt-3">
+			{#if data.matches.length}
+				<button on:click={() => clicked++}>
+					Yes!
+				</button>
+			{:else}
+				No
+			{/if}
+
+		</h1>
 		{#each data.matches as product}
 			<Product {product}/>
 		{:else}
