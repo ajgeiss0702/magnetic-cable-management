@@ -15,6 +15,7 @@
 	function check() {
 		const lastCheckDistance = Date.now() - data.lastCheck;
 		if((i++ % 5 !== 0 && !isNearWan() && lastCheckDistance < 30 * 60e3) || (document.hidden && lastCheckDistance < 2 * 60 * 60e3)) return;
+		if(data.matches.length > 0) return; // don't update at all once theyre released
 		console.debug("Invalidating (checking)", lastCheckDistance, i, isNearWan())
 		invalidateAll()
 	}
