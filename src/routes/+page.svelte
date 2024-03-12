@@ -5,6 +5,7 @@
 	import {invalidateAll} from "$app/navigation";
 	import {isNearWan} from "$lib";
 	import Confetti from "svelte-confetti";
+	import {browser} from "$app/environment";
 
 	export let data;
 
@@ -12,6 +13,7 @@
 	let i = 0;
 	let clicked = 0;
 	let mounted = false;
+	let isHidden = browser ? document.hidden : true;
 
 	$: lastCheckDate = new Date(data.lastCheck);
 
@@ -37,6 +39,7 @@
 </script>
 <svelte:window
 		on:focus={onFocus}
+		on:visibilitychange={() => isHidden = document.hidden}
 />
 <svelte:head>
 	<title>Have they launched magnetic cable management yet? (.com)</title>
@@ -50,7 +53,7 @@
 		<img src="/arch_stick.webp" width="550" height="451" class="big-arch">
 		<br>
 		Have they launched magnetic cable management yet? (.com)
-		{#if data.matches.length > 0 && mounted}
+		{#if data.matches.length > 0 && mounted && !isHidden}
 			<div class="h-0 w-0 mx-auto">
 				{#key clicked}
 					<Confetti cone x={[-1.5, 1.5]} y={[0.25, 1.5]} amount={50} fallDistance="100px"/>
