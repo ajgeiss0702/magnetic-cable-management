@@ -5,7 +5,7 @@
 	import {invalidateAll} from "$app/navigation";
 	import {isNearWan} from "$lib";
 	import Confetti from "svelte-confetti";
-	import {browser} from "$app/environment";
+	import {browser, dev} from "$app/environment";
 
 	export let data;
 
@@ -15,14 +15,31 @@
 	let mounted = false;
 	let isHidden = browser ? document.hidden : true;
 
+	let inner: HTMLDivElement;
+	let outer: HTMLDivElement;
+
 	$: lastCheckDate = new Date(data.lastCheck);
 
-	function check() {
+	async function check() {
 		const lastCheckDistance = Date.now() - data.lastCheck;
 		if((i++ % 5 !== 0 && !isNearWan() && lastCheckDistance < 30 * 60e3) || (document.hidden && lastCheckDistance < 2 * 60 * 60e3)) return;
 		if(data.matches.length > 0) return; // don't update at all once theyre released
 		console.debug("Invalidating (checking)", lastCheckDistance, i, isNearWan())
-		invalidateAll()
+		await invalidateAll();
+		checkHeight();
+	}
+
+	function checkHeight() {
+		if(!browser || !inner) return;
+		if(inner.scrollHeight > window.innerHeight-50) {
+			outer.classList.remove("flex")
+			inner.classList.add("py-12")
+			if(dev) console.debug("too short")
+		} else {
+			outer.classList.add("flex")
+			inner.classList.remove("py-12")
+			if(dev) console.debug("not too short")
+		}
 	}
 
 	function onFocus() {
@@ -32,6 +49,9 @@
 	}
 
 	onMount(() => {
+
+		checkHeight()
+
 		const i = setInterval(check, 24e3);
 		mounted = true;
 		return () => clearInterval(i);
@@ -40,6 +60,7 @@
 <svelte:window
 		on:focus={onFocus}
 		on:visibilitychange={() => isHidden = document.hidden}
+		on:resize={checkHeight}
 />
 <svelte:head>
 	<title>Have they launched magnetic cable management yet? (.com)</title>
@@ -48,8 +69,8 @@
 	<meta name="twitter:card" content="summary_large_image">
 </svelte:head>
 
-<div class="container h-screen mx-auto flex justify-center items-center">
-	<div class="space-y-5 justify-self-center text-center">
+<div class="container h-screen mx-auto flex justify-center items-center" bind:this={outer}>
+	<div class="space-y-5 justify-self-center text-center" bind:this={inner}>
 		<img src="/arch_stick.webp" width="550" height="451" class="big-arch">
 		<br>
 		Have they launched magnetic cable management yet? (.com)

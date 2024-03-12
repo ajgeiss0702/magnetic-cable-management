@@ -1,4 +1,4 @@
-import {version} from "$app/environment";
+import {dev, version} from "$app/environment";
 import type {ShopifyProduct} from "$lib";
 import type {PageServerLoad} from "./$types";
 
@@ -41,7 +41,7 @@ export const load = (async ({fetch, platform}) => {
         .then(r => r.products as ShopifyProduct[])
 
     const matches = products.filter(p => p.title.toLowerCase().includes("magnet"))
-    // const matches = products.filter(p => p.title.toLowerCase().includes("shirt"))
+    // const matches= products.filter(p => p.title.toLowerCase().includes(dev ? "shirt" : "magnet"));
 
     const response: Response = {
         matches,
