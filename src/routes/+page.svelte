@@ -82,7 +82,7 @@
 		{/each}
 
 		<br>
-		<div class="opacity-65">
+		<div class="opacity-65 text-sm">
 			Images and products from <a href="https://lttstore.com" class="anchor">lttstore.com</a><br>
 			This site made by
 			<a href="https://about.ajg0702.us" class="anchor" target="_blank" rel="noopener">
