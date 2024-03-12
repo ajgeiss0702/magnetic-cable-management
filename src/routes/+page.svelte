@@ -43,7 +43,9 @@
 	}
 
 	function onFocus() {
-		if(Date.now() - data.lastCheck > 2 * 60e3) {
+		const lastCheckDistance = Date.now() - data.lastCheck;
+		console.debug({lastCheckDistance})
+		if(lastCheckDistance > 2 * 60e3) {
 			check()
 		}
 	}
@@ -59,7 +61,7 @@
 </script>
 <svelte:window
 		on:focus={onFocus}
-		on:visibilitychange={() => isHidden = document.hidden}
+		on:visibilitychange={() => {isHidden = document.hidden;setTimeout(onFocus, 500)}}
 		on:resize={checkHeight}
 />
 <svelte:head>
