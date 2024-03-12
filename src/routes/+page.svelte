@@ -92,6 +92,9 @@
 			{/if}
 
 		</h1>
+		{#if data.matches.length}
+		<br>
+		{/if}
 		{#each data.matches as product}
 			<Product {product}/>
 		{:else}
@@ -104,12 +107,17 @@
 
 		<br>
 		<div class="opacity-65 text-sm">
-			Images and products from <a href="https://lttstore.com" class="anchor">lttstore.com</a><br>
+			Images and products from <a href="https://lttstore.com/?ref=havetheylaunchedmagneticcablemanagementyet.com" class="anchor">lttstore.com</a><br>
 			This site made by
 			<a href="https://about.ajg0702.us" class="anchor" target="_blank" rel="noopener">
 				aj
 			</a>
 		</div>
+		{#if dev && data.all}
+			{#each data.all as name}
+				{name}<br>
+			{/each}
+		{/if}
 	</div>
 </div>
 

@@ -41,11 +41,12 @@ export const load = (async ({fetch, platform}) => {
         .then(r => r.products as ShopifyProduct[])
 
     const matches = products.filter(p => p.title.toLowerCase().includes("magnet"))
-    // const matches= products.filter(p => p.title.toLowerCase().includes(dev ? "shirt" : "magnet"));
+    // const matches = products.filter(p => p.title.toLowerCase().includes(dev ? "a" : "magnet"));
 
     const response: Response = {
         matches,
-        lastCheck: Date.now()
+        lastCheck: Date.now(),
+        // all: products.map(p => p.title)
     };
 
     cache = {
@@ -58,5 +59,6 @@ export const load = (async ({fetch, platform}) => {
 
 type Response = {
     matches: ShopifyProduct[],
+    all?: String[]
     lastCheck: number
 }
