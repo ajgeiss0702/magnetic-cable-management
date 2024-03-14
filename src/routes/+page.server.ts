@@ -40,7 +40,7 @@ export const load = (async ({fetch, platform}) => {
     const products = await productsResponse.json()
         .then(r => r.products as ShopifyProduct[])
 
-    const matches = products.filter(p => p.title.toLowerCase().includes("magnet"))
+    const matches = products.filter(p => p.title.toLowerCase().includes("magnet") || p.title.toLowerCase().includes("mcm"))
     // const matches = products.filter(p => p.title.toLowerCase().includes(dev ? "a" : "magnet"));
 
     const response: Response = {
